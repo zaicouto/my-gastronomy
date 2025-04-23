@@ -1,5 +1,6 @@
 import express from "express";
 import cors from "cors";
+import { Mongo } from "./database/mongo";
 
 async function main() {
   const app = express();
