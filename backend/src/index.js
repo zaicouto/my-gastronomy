@@ -2,14 +2,31 @@ import express from "express";
 import cors from "cors";
 import { Mongo } from "./database/mongo.js";
 import { config } from "dotenv";
+import path from "node:path";
 
-config();
+config({
+  path: path.join(process.cwd(), "src", ".env"),
+});
 
 async function main() {
+  const mongoConnectionString = process.env.MONGO_CONNECTION_STRING;
+  if (!mongoConnectionString) {
+    throw new Error("MONGO_CONNECTION_STRING is not defined");
+  }
+
+  console.log("mongoConnectionString :>> ", mongoConnectionString);
+
+  const databaseName = process.env.DATABASE_NAME;
+  if (!databaseName) {
+    throw new Error("DATABASE_NAME is not defined");
+  }
+
+  console.log("databaseName :>> ", databaseName);
+
   const app = express();
   const result = await Mongo.connect({
-    mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
-    databaseName: process.env.DATABASE_NAME,
+    mongoConnectionString,
+    databaseName,
   });
   console.log("result :>> ", result);
 
