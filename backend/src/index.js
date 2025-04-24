@@ -1,9 +1,17 @@
 import express from "express";
 import cors from "cors";
-import { Mongo } from "./database/mongo";
+import { Mongo } from "./database/mongo.js";
+import { config } from "dotenv";
+
+config();
 
 async function main() {
   const app = express();
+  const result = await Mongo.connect({
+    mongoConnectionString: process.env.MONGO_CONNECTION_STRING,
+    databaseName: process.env.DATABASE_NAME,
+  });
+  console.log("result :>> ", result);
 
   app.use(cors());
   app.use(express.json());
