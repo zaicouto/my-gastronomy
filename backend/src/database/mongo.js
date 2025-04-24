@@ -7,11 +7,10 @@ export const Mongo = {
       this.client = client;
 
       await client.connect();
-      console.log("Connected to MongoDB");
 
       this.db = client.db(databaseName);
 
-      return "MongoDB connected successfully";
+      console.log("Connected to MongoDB");
     } catch (error) {
       console.error(error);
       throw error;
