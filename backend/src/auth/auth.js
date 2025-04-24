@@ -21,7 +21,7 @@ passport.use(
           return callback(null, false);
         }
 
-        const saltBuffer = user.salt.saltBuffer;
+        const saltBuffer = user.salt.buffer;
 
         crypto.pbkdf2(
           password,
@@ -110,6 +110,35 @@ authRouter.post("/signup", async (req, res) => {
       }
     }
   );
+});
+
+authRouter.post("/login", (req, res) => {
+  passport.authenticate("local", (err, user) => {
+    if (err) {
+      return res.status(400).json({
+        success: false,
+        error: "Error authenticating user",
+        body: null,
+      });
+    }
+
+    if (!user) {
+      return res.status(400).json({
+        success: false,
+        error: "Invalid email or password",
+        body: null,
+      });
+    }
+
+    const { password, salt, ...rest } = user;
+    const token = jwt.sign(rest, process.env.JWT_SECRET);
+
+    return res.json({
+      success: true,
+      error: null,
+      body: { token, rest, loggedIn: true },
+    });
+  })(req, res);
 });
 
 export default authRouter;
