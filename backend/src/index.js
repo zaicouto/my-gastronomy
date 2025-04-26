@@ -8,11 +8,11 @@ import httpResponseMiddleware from "./middlewares/http-response.middleware.js";
 import peopleRouter from "./routers/people.router.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
 
-config({
-  path: path.join(process.cwd(), "src", ".env"),
-});
-
 async function main() {
+  config({
+    path: path.join(process.cwd(), "src", ".env"),
+  });
+
   const connectionString = process.env.MONGO_CONNECTION_STRING;
   if (!connectionString) {
     throw new Error("MONGO_CONNECTION_STRING is not defined");
@@ -23,11 +23,11 @@ async function main() {
     throw new Error("DATABASE_NAME is not defined");
   }
 
+  console.log("databaseName :>> ", databaseName);
   await mongo.connect({
     connectionString,
     databaseName,
   });
-  console.log("databaseName :>> ", databaseName);
 
   const app = express();
 
@@ -37,15 +37,16 @@ async function main() {
 
   app.use(httpResponseMiddleware);
 
-  
   app.get("/", (_, res) => res.ok("Hello World!"));
-  
+
+  app.get("/__debug", (_, res) => res.ok("Debug route working"));
+
   app.use("/auth", authRouter);
-  
+
   app.use("/people", peopleRouter);
-  
+
   app.use(errorHandlerMiddleware);
-  
+
   const port = process.env.PORT || 3000;
   const hostname = process.env.HOSTNAME || "localhost";
 

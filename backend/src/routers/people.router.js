@@ -6,7 +6,7 @@ const router = express.Router();
 const peopleController = new PeopleController();
 
 router.get("/", async (_, res) => {
-  console.log("Getting all people -> /people");
+  console.log("Reading all people -> /people");
   const result = await peopleController.getAllPeople();
   res.ok(result);
 });

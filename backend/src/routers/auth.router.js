@@ -10,6 +10,9 @@ const router = express.Router();
 const collectionName = "people";
 
 router.post("/signup", async (req, res) => {
+  console.log("Trying to signup -> /auth/signup");
+  console.log("req.body :>> ", req.body);
+
   const userExists = await mongo.db
     .collection(collectionName)
     .findOne({ email: req.body.email });
@@ -57,6 +60,8 @@ router.post("/signup", async (req, res) => {
 });
 
 router.post("/login", authMiddleware, (req, res) => {
+  console.log("Trying to login -> /auth/login");
+  console.log("req.body :>> ", req.body);
   res.ok(req.auth);
 });
 
