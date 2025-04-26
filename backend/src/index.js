@@ -1,17 +1,20 @@
 import express from "express";
 import cors from "cors";
-import { Mongo } from "./database/mongo.js";
+import mongo from "./data/mongo.js";
 import { config } from "dotenv";
 import path from "node:path";
-import authRouter from "./auth/auth.js";
+import authRouter from "./routers/auth.router.js";
+import httpResponseMiddleware from "./middlewares/http-response.middleware.js";
+import peopleRouter from "./routers/people.router.js";
+import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
 
 config({
   path: path.join(process.cwd(), "src", ".env"),
 });
 
 async function main() {
-  const mongoConnectionString = process.env.MONGO_CONNECTION_STRING;
-  if (!mongoConnectionString) {
+  const connectionString = process.env.MONGO_CONNECTION_STRING;
+  if (!connectionString) {
     throw new Error("MONGO_CONNECTION_STRING is not defined");
   }
 
@@ -20,8 +23,8 @@ async function main() {
     throw new Error("DATABASE_NAME is not defined");
   }
 
-  await Mongo.connect({
-    mongoConnectionString,
+  await mongo.connect({
+    connectionString,
     databaseName,
   });
   console.log("databaseName :>> ", databaseName);
@@ -29,27 +32,29 @@ async function main() {
   const app = express();
 
   app.use(cors());
+
   app.use(express.json());
 
-  app.get("/", (_, res) => {
-    res.json({
-      success: true,
-      error: null,
-      body: "Hello World!",
-    });
-  });
+  app.use(httpResponseMiddleware);
 
+  
+  app.get("/", (_, res) => res.ok("Hello World!"));
+  
   app.use("/auth", authRouter);
-
-  const PORT = process.env.PORT || 3000;
+  
+  app.use("/people", peopleRouter);
+  
+  app.use(errorHandlerMiddleware);
+  
+  const port = process.env.PORT || 3000;
   const hostname = process.env.HOSTNAME || "localhost";
 
-  app.listen(PORT, () => {
-    console.log(`Server is running on http://${hostname}:${PORT}`);
+  app.listen(port, () => {
+    console.log(`Server is running on http://${hostname}:${port}`);
   });
 }
 
 main().catch((err) => {
-  console.error(err);
+  console.error("Error starting app :>> ", err);
   process.exit(1);
 });
