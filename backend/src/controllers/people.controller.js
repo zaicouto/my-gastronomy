@@ -15,7 +15,11 @@ export default class PeopleController {
     return "User deleted successfully";
   }
 
-  async updateUser() {
-    // Implement update user logic here
+  async updateUser(userId, userData) {
+    const result = await this.ctx.updateUser(userId, userData);
+    return {
+      message: "User updated successfully",
+      userId: result._id,
+    };
   }
 }

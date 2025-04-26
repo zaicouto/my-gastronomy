@@ -51,11 +51,12 @@ export default function authMiddleware(req, res, next) {
     },
     (err, user) => {
       if (err) {
-        throw new Error("Failed to authenticate user");
+        console.error("Authentication error :>> ", err);
+        return next(new Error("Failed to authenticate user"));
       }
 
       if (!user) {
-        throw new Error("Invalid email or password");
+        return next(new Error("Invalid email or password"));
       }
 
       const { password, salt, ...rest } = user;

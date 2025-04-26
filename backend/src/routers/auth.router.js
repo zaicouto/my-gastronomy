@@ -31,6 +31,7 @@ router.post("/signup", async (req, res) => {
     "sha256",
     async (err, hashedPassword) => {
       if (err) {
+        console.error("Failed to hash password :>> ", err);
         return res.bad("Failed to hash password");
       }
 

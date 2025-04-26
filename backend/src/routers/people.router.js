@@ -19,4 +19,14 @@ router.delete("/:userId", async (req, res) => {
   res.ok(result);
 });
 
+router.put("/:userId", async (req, res) => {
+  const { userId } = req.params;
+  
+  console.log(`Updating user -> /people/${userId}`);
+  console.log(`req.body :>> `, req.body);
+
+  const result = await peopleController.updateUser(userId, req.body);
+  res.ok(result);
+});
+
 export default router;
