@@ -1,4 +1,7 @@
 {
     "editor.tabSize": 2,
-    "javascript.preferences.importModuleSpecifierEnding": "js"
+    "javascript.preferences.importModuleSpecifierEnding": "js",
+    "cSpell.words": [
+        "pbkd"
+    ]
 }
