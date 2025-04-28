@@ -7,6 +7,7 @@ import authRouter from "./routers/auth.router.js";
 import httpResponseMiddleware from "./middlewares/http-response.middleware.js";
 import peopleRouter from "./routers/people.router.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
+import mealsRouter from "./routers/meals.router.js";
 
 async function main() {
   config({
@@ -44,6 +45,8 @@ async function main() {
   app.use("/auth", authRouter);
 
   app.use("/people", peopleRouter);
+
+  app.use("/meals", mealsRouter);
 
   app.use(errorHandlerMiddleware);
 
