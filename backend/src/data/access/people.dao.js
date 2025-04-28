@@ -6,7 +6,7 @@ import pbkdf2 from "../../helpers/pbkd2.js";
 export default class PeopleDAO {
   collectionName = "people";
 
-  async getAllPeople() {
+  async readAllPeople() {
     const result = await mongo.db
       .collection(this.collectionName)
       .find({})

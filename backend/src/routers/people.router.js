@@ -7,7 +7,7 @@ const peopleDao = new PeopleDAO();
 
 router.get("/", async (_, res) => {
   console.log("Reading all people -> /people");
-  const people = await peopleDao.getAllPeople();
+  const people = await peopleDao.readAllPeople();
   res.ok(people);
 });
 
