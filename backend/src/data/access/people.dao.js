@@ -1,7 +1,7 @@
-import mongo from "../data/mongo.js";
+import mongo from "../mongo.js";
 import { ObjectId } from "mongodb";
 import crypto from "crypto";
-import pbkdf2 from "../helpers/pbkd2.js";
+import pbkdf2 from "../../helpers/pbkd2.js";
 
 export default class PeopleDAO {
   collectionName = "people";

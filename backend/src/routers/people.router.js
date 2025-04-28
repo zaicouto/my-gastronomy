@@ -1,5 +1,5 @@
 import express from "express";
-import PeopleDAO from "../data-access/people.dao.js";
+import PeopleDAO from "../data/access/people.dao.js";
 
 const router = express.Router();
 
