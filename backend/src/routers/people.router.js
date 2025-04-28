@@ -23,7 +23,7 @@ router.put("/:userId", async (req, res) => {
   const { userId } = req.params;
 
   console.log(`Updating user -> /people/${userId}`);
-  console.log(`req.body :>> `, req.body);
+  console.log("req.body :>> ", req.body);
 
   const result = await peopleDao.updateUser(userId, req.body);
   res.ok({

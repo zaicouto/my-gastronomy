@@ -22,35 +22,30 @@ router.post("/signup", async (req, res) => {
   }
 
   const newSalt = crypto.randomBytes(16);
-  try {
-    const hashedPassword = await pbkdf2(req.body.password, newSalt);
-    const result = await mongo.db.collection(collectionName).insertOne({
-      email: req.body.email,
-      password: hashedPassword,
-      newSalt,
-    });
+  const hashedPassword = await pbkdf2(req.body.password, newSalt);
+  const result = await mongo.db.collection(collectionName).insertOne({
+    email: req.body.email,
+    password: hashedPassword,
+    newSalt,
+  });
 
-    if (!result.insertedId) {
-      throw new Error("Failed to create user");
-    }
-
-    const { password, salt, ...rest } = await mongo.db
-      .collection(collectionName)
-      .findOne({ _id: new ObjectId(result.insertedId) });
-
-    const token = jwt.sign(
-      {
-        id: rest._id,
-        email: rest.email,
-      },
-      process.env.JWT_SECRET
-    );
-
-    return res.ok({ token, user: rest, loggedIn: true });
-  } catch (error) {
-    console.error("Failed to signup :>> ", err);
-    return res.bad("Failed to signup user");
+  if (!result.insertedId) {
+    throw new Error("Failed to create user");
   }
+
+  const { password, salt, ...rest } = await mongo.db
+    .collection(collectionName)
+    .findOne({ _id: new ObjectId(result.insertedId) });
+
+  const token = jwt.sign(
+    {
+      id: rest._id,
+      email: rest.email,
+    },
+    process.env.JWT_SECRET,
+  );
+
+  return res.ok({ token, user: rest, loggedIn: true });
 });
 
 router.post("/login", authMiddleware, (req, res) => {

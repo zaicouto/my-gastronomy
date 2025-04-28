@@ -36,14 +36,9 @@ export default class PeopleDAO {
 
     if (password) {
       const salt = crypto.randomBytes(16);
-      try {
-        const hashedPassword = await pbkdf2(userData.password, salt);
-        updateFields.password = hashedPassword;
-        updateFields.salt = salt;
-      } catch (err) {
-        console.error("Failed to hash password :>> ", err);
-        throw new Error("Failed to hash password");
-      }
+      const hashedPassword = await pbkdf2(userData.password, salt);
+      updateFields.password = hashedPassword;
+      updateFields.salt = salt;
     }
 
     const result = await mongo.db
@@ -51,7 +46,7 @@ export default class PeopleDAO {
       .findOneAndUpdate(
         { _id: new ObjectId(userId) },
         { $set: updateFields },
-        { returnDocument: "after" }
+        { returnDocument: "after" },
       );
 
     if (!result) {

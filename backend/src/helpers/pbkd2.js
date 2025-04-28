@@ -7,7 +7,7 @@ export default async function pbkdf2(password, salt) {
     salt,
     310000,
     16,
-    "sha256"
+    "sha256",
   );
 
   return hashedPassword;
