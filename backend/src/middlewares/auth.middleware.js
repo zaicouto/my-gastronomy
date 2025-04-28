@@ -3,7 +3,7 @@ import LocalStrategy from "passport-local";
 import crypto from "crypto";
 import mongo from "../data/mongo.js";
 import jwt from "jsonwebtoken";
-import pbkdf2 from "../helpers/pbkd2.js";
+import pbkdf2 from "../helpers/pbkdf2.js";
 
 const collectionName = "people";
 
