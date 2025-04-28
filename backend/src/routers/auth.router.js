@@ -21,48 +21,39 @@ router.post("/signup", async (req, res) => {
     return res.bad("User already exists");
   }
 
-  const salt = crypto.randomBytes(16);
+  const newSalt = crypto.randomBytes(16);
+  try {
+    const hashedPassword = await pbkdf2(req.body.password, newSalt);
+    const result = await mongo.db.collection(collectionName).insertOne({
+      email: req.body.email,
+      password: hashedPassword,
+      newSalt,
+    });
 
-  crypto.pbkdf2(
-    req.body.password,
-    salt,
-    310000,
-    16,
-    "sha256",
-    async (err, hashedPassword) => {
-      if (err) {
-        console.error("Failed to hash password :>> ", err);
-        return res.bad("Failed to hash password");
-      }
-
-      const result = await mongo.db.collection(collectionName).insertOne({
-        email: req.body.email,
-        password: hashedPassword,
-        salt,
-      });
-
-      if (result.insertedId) {
-        const { password, salt, ...rest } = await mongo.db
-          .collection(collectionName)
-          .findOne({ _id: new ObjectId(result.insertedId) });
-
-        const token = jwt.sign(
-          {
-            id: rest._id,
-            email: rest.email,
-          },
-          process.env.JWT_SECRET
-        );
-
-        return res.ok({ token, user: rest, loggedIn: true });
-      }
+    if (!result.insertedId) {
+      throw new Error("Failed to create user");
     }
-  );
+
+    const { password, salt, ...rest } = await mongo.db
+      .collection(collectionName)
+      .findOne({ _id: new ObjectId(result.insertedId) });
+
+    const token = jwt.sign(
+      {
+        id: rest._id,
+        email: rest.email,
+      },
+      process.env.JWT_SECRET
+    );
+
+    return res.ok({ token, user: rest, loggedIn: true });
+  } catch (error) {
+    console.error("Failed to signup :>> ", err);
+    return res.bad("Failed to signup user");
+  }
 });
 
 router.post("/login", authMiddleware, (req, res) => {
-  console.log("Trying to login -> /auth/login");
-  console.log("req.body :>> ", req.body);
   res.ok(req.auth);
 });
 

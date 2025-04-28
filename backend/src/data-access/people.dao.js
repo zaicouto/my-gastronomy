@@ -1,9 +1,9 @@
 import mongo from "../data/mongo.js";
 import { ObjectId } from "mongodb";
 import crypto from "crypto";
-import { promisify } from "node:util";
+import pbkdf2 from "../helpers/pbkd2.js";
 
-export default class People {
+export default class PeopleDAO {
   collectionName = "people";
 
   async getAllPeople() {
@@ -37,14 +37,7 @@ export default class People {
     if (password) {
       const salt = crypto.randomBytes(16);
       try {
-        const hashedPassword = await promisify(crypto.pbkdf2)(
-          userData.password,
-          salt,
-          310000,
-          16,
-          "sha256"
-        );
-
+        const hashedPassword = await pbkdf2(userData.password, salt);
         updateFields.password = hashedPassword;
         updateFields.salt = salt;
       } catch (err) {

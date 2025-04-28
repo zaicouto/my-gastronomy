@@ -1,32 +1,35 @@
 import express from "express";
-import PeopleController from "../controllers/people.controller.js";
+import PeopleDAO from "../data-access/people.dao.js";
 
 const router = express.Router();
 
-const peopleController = new PeopleController();
+const peopleDao = new PeopleDAO();
 
 router.get("/", async (_, res) => {
   console.log("Reading all people -> /people");
-  const result = await peopleController.getAllPeople();
-  res.ok(result);
+  const people = await peopleDao.getAllPeople();
+  res.ok(people);
 });
 
 router.delete("/:userId", async (req, res) => {
   const { userId } = req.params;
   console.log(`Deleting user -> /people/${userId}`);
 
-  const result = await peopleController.deleteUser(userId);
-  res.ok(result);
+  await peopleDao.deleteUser(userId);
+  res.ok("User deleted successfully");
 });
 
 router.put("/:userId", async (req, res) => {
   const { userId } = req.params;
-  
+
   console.log(`Updating user -> /people/${userId}`);
   console.log(`req.body :>> `, req.body);
 
-  const result = await peopleController.updateUser(userId, req.body);
-  res.ok(result);
+  const result = await peopleDao.updateUser(userId, req.body);
+  res.ok({
+    message: "User updated successfully",
+    userId: result._id,
+  });
 });
 
 export default router;
