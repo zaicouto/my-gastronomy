@@ -4,7 +4,7 @@ import { ObjectId } from "mongodb";
 export default class MealsDAO {
   collectionName = "meals";
 
-  async getAllMeals() {
+  async readAllMeals() {
     const result = await mongo.db
       .collection(this.collectionName)
       .find({})
@@ -14,7 +14,7 @@ export default class MealsDAO {
     return result;
   }
 
-  async getAvailableMeals() {
+  async readAvailableMeals() {
     const result = await mongo.db
       .collection(this.collectionName)
       .find({ available: true })
@@ -24,7 +24,7 @@ export default class MealsDAO {
     return result;
   }
 
-  async insertMeal(mealData) {
+  async createMeal(mealData) {
     const result = await mongo.db
       .collection(this.collectionName)
       .insertOne(mealData);
