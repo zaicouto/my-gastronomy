@@ -37,9 +37,20 @@ export default class OrdersDAO {
         },
         {
           $project: {
+            userId: 0,
             "user.password": 0,
             "user.salt": 0,
-            "items.details._id": 0,
+            "items.mealId": 0,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            pickupTime: { $first: "$pickupTime" },
+            status: { $first: "$status" },
+            createdAt: { $first: "$createdAt" },
+            user: { $first: "$user" },
+            items: { $push: "$items" },
           },
         },
       ])
@@ -50,15 +61,21 @@ export default class OrdersDAO {
   }
 
   async deleteOrder(orderId) {
-    const result = await mongo.db
+    const orderToDelete = await mongo.db
       .collection(this.collectionName)
       .findOneAndDelete({
         _id: new ObjectId(orderId),
       });
 
-    if (!result) {
+    if (!orderToDelete) {
       throw new Error("Order not found or deletion failed");
     }
+    console.log("orderToDelete :>> ", orderToDelete);
+
+    const result = await mongo.db
+      .collection("orders_items")
+      .deleteMany({ orderId: new ObjectId(orderId) });
+
     console.log("result :>> ", result);
   }
 
