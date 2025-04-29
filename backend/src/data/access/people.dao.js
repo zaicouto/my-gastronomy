@@ -32,20 +32,19 @@ export default class PeopleDAO {
 
   async updateUser(userId, userData) {
     const { _id, password, ...rest } = userData;
-    const updateFields = { ...rest };
 
     if (password) {
       const salt = crypto.randomBytes(16);
       const hashedPassword = await pbkdf2(userData.password, salt);
-      updateFields.password = hashedPassword;
-      updateFields.salt = salt;
+      rest.password = hashedPassword;
+      rest.salt = salt;
     }
 
     const result = await mongo.db
       .collection(this.collectionName)
       .findOneAndUpdate(
         { _id: new ObjectId(userId) },
-        { $set: updateFields },
+        { $set: rest },
         { returnDocument: "after" },
       );
 

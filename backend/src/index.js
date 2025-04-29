@@ -8,6 +8,7 @@ import httpResponseMiddleware from "./middlewares/http-response.middleware.js";
 import peopleRouter from "./routers/people.router.js";
 import errorHandlerMiddleware from "./middlewares/error-handler.middleware.js";
 import mealsRouter from "./routers/meals.router.js";
+import ordersRouter from "./routers/orders.router.js";
 
 async function main() {
   config({
@@ -32,22 +33,21 @@ async function main() {
 
   const app = express();
 
+  // Middlewares
   app.use(cors());
-
   app.use(express.json());
-
   app.use(httpResponseMiddleware);
 
-  app.get("/", (_, res) => res.ok("Hello World!"));
+  // Health check
+  app.get("/__debug", (_, res) => res.ok("Hello World!"));
 
-  app.get("/__debug", (_, res) => res.ok("Debug route working"));
-
+  // Routers
   app.use("/auth", authRouter);
-
+  app.use("/meals", mealsRouter);
+  app.use("/orders", ordersRouter);
   app.use("/people", peopleRouter);
 
-  app.use("/meals", mealsRouter);
-
+  // Error handling
   app.use(errorHandlerMiddleware);
 
   const port = process.env.PORT || 3000;
