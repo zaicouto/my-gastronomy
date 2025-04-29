@@ -7,7 +7,42 @@ export default class OrdersDAO {
   async readAllOrders() {
     const result = await mongo.db
       .collection(this.collectionName)
-      .find({})
+      .aggregate([
+        {
+          $lookup: {
+            from: "orders_items",
+            localField: "_id",
+            foreignField: "orderId",
+            as: "items",
+          },
+        },
+        {
+          $lookup: {
+            from: "people",
+            localField: "userId",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$items",
+        },
+        {
+          $lookup: {
+            from: "meals",
+            localField: "items.mealId",
+            foreignField: "_id",
+            as: "items.details",
+          },
+        },
+        {
+          $project: {
+            "user.password": 0,
+            "user.salt": 0,
+            "items.details._id": 0,
+          },
+        },
+      ])
       .toArray();
 
     console.log("result.slice(0, 5) :>> ", result.slice(0, 5));
@@ -24,7 +59,6 @@ export default class OrdersDAO {
     if (!result) {
       throw new Error("Order not found or deletion failed");
     }
-
     console.log("result :>> ", result);
   }
 
@@ -34,7 +68,7 @@ export default class OrdersDAO {
       .findOneAndUpdate(
         { _id: new ObjectId(orderId) },
         { $set: orderData },
-        { returnDocument: "after" },
+        { returnDocument: "after" }
       );
 
     if (!result) {
@@ -51,6 +85,7 @@ export default class OrdersDAO {
     rest.createdAt = new Date();
     rest.status = "pending";
     rest.userId = new ObjectId(orderData.userId);
+    rest.pickupTime = new Date(orderData.pickupTime);
 
     const newOrder = await mongo.db
       .collection(this.collectionName)
@@ -59,8 +94,22 @@ export default class OrdersDAO {
     if (!newOrder.insertedId) {
       throw new Error("Failed to create order");
     }
+    console.log("newOrder :>> ", newOrder);
 
-    const result = await mongo.db.collection("orders_items").insertMany(items);
-    return result;
+    items.forEach((item) => {
+      item.mealId = new ObjectId(item.mealId);
+      item.orderId = new ObjectId(newOrder.insertedId);
+    });
+
+    const newOrderItems = await mongo.db
+      .collection("orders_items")
+      .insertMany(items);
+
+    if (newOrderItems.insertedCount !== items.length) {
+      throw new Error("Failed to create order items");
+    }
+    console.log("newOrderItems :>> ", newOrderItems);
+
+    return newOrder;
   }
 }
