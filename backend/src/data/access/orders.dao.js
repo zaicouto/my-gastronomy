@@ -10,7 +10,7 @@ export default class OrdersDAO {
       .aggregate([
         {
           $lookup: {
-            from: "orders_items",
+            from: "ordersItems",
             localField: "_id",
             foreignField: "orderId",
             as: "items",
@@ -73,7 +73,7 @@ export default class OrdersDAO {
     console.log("orderToDelete :>> ", orderToDelete);
 
     const result = await mongo.db
-      .collection("orders_items")
+      .collection("ordersItems")
       .deleteMany({ orderId: new ObjectId(orderId) });
 
     console.log("result :>> ", result);
@@ -119,7 +119,7 @@ export default class OrdersDAO {
     });
 
     const newOrderItems = await mongo.db
-      .collection("orders_items")
+      .collection("ordersItems")
       .insertMany(items);
 
     if (newOrderItems.insertedCount !== items.length) {
