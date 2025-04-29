@@ -1,0 +1,364 @@
+type: collection.insomnia.rest/5.0
+name: Scratch Pad
+meta:
+  id: wrk_scratchpad
+  created: 1745436764110
+  modified: 1745436764110
+collection:
+  - name: Auth
+    meta:
+      id: fld_098a992c796c488884db933e448cf6b6
+      created: 1745685678985
+      modified: 1745685697542
+      sortKey: -1745436878793.25
+    children:
+      - url: "{{ _.base_url }}/auth/signup"
+        name: Sign up
+        meta:
+          id: req_9efe7d81a3cb4299b41720ebb43f92a2
+          created: 1745509170962
+          modified: 1745685687259
+          isPrivate: false
+          sortKey: -1745685687191
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "{% faker 'randomEmail' %}",
+            	"password": "12345"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/auth/login"
+        name: Login
+        meta:
+          id: req_6c5fbc3403874848a7db2a9473349ed0
+          created: 1745512824923
+          modified: 1745852985979
+          isPrivate: false
+          sortKey: -1745685687091
+        method: POST
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"email": "Ladarius89@gmail.com",
+            	"password": "12345"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+  - name: People
+    meta:
+      id: fld_8dcbb6a4f2c64d21ba0198e6c91f7f8c
+      created: 1745685704535
+      modified: 1745871631847
+      sortKey: -1745436878776.0625
+    children:
+      - url: "{{ _.base_url }}/people"
+        name: Read all people
+        meta:
+          id: req_23f1b46c1f6f457f85b7b32d99629bc8
+          created: 1745522184067
+          modified: 1745685722154
+          isPrivate: false
+          sortKey: -1745685722092
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/people/:userId"
+        name: Delete user
+        meta:
+          id: req_5c54d26f40094ac5974d72a47514c215
+          created: 1745632054678
+          modified: 1745852718403
+          isPrivate: false
+          sortKey: -1745685721992
+        method: DELETE
+        body:
+          mimeType: application/json
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: userId
+            value: 680c3c81786a11f96f522fe6
+      - url: "{{ _.base_url }}/people/:userId"
+        name: Update user
+        meta:
+          id: req_a9c9f8982a164d23bfd95b09d1fa0c2a
+          created: 1745684660541
+          modified: 1745852745437
+          isPrivate: false
+          sortKey: -1745685721892
+        method: PUT
+        body:
+          mimeType: application/json
+          text: |-
+            {
+            	"_id": "680a80fe221d4f48b3a9f3ba",
+            	"email": "Pat391@hotmail.com",
+            	"password": "12345",
+            	"salt": "uQucD5erG6vnJVEcB5ZdBQ=="
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: userId
+            value: 680a80fe221d4f48b3a9f3ba
+  - name: Meals
+    meta:
+      id: fld_ece98ccddc7e40159b276672a6763246
+      created: 1745871232394
+      modified: 1745879462943
+      sortKey: -1745436878784.6562
+    children:
+      - url: "{{ _.base_url }}/meals"
+        name: Read all meals
+        meta:
+          id: req_208faaef16cc4fb783b16ae466c93e7b
+          created: 1745871240754
+          modified: 1745871261902
+          isPrivate: false
+          sortKey: -1745871240754
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/meals/available"
+        name: Read available meals
+        meta:
+          id: req_a287400d629b4bb599e4af4902cc28b0
+          created: 1745871283013
+          modified: 1745871287445
+          isPrivate: false
+          sortKey: -1745778481423
+        method: GET
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/meals"
+        name: Create meal
+        meta:
+          id: req_405ff3a429f34516845a8b401435e51a
+          created: 1745871307429
+          modified: 1745878290047
+          isPrivate: false
+          sortKey: -1745732101757.5
+        method: POST
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"name": "Grilled Tuna",
+            	"price": 14.99,
+            	"available": true,
+            	"description": "A delicious grilled fresh tuna fillet, accompanied by a side of mixed vegetables that will make your palate happy!",
+            	"ingredients": ["Tuna fillet", "Mixed vegetables"],
+            	"imgUrl": "/images/plates/grilledSalmon.png",
+            	"category": "Second"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+      - url: "{{ _.base_url }}/meals/:mealId"
+        name: Update meal
+        meta:
+          id: req_4bcd1398720641fa8c46cbb980f9b15d
+          created: 1745871540690
+          modified: 1745878396909
+          isPrivate: false
+          sortKey: -1745708911924.75
+        method: PUT
+        body:
+          mimeType: application/json
+          text: >-
+            {
+            	"name": "Grilled Squid",
+            	"price": 14.99,
+            	"available": true,
+            	"description": "A delicious grilled fresh tuna fillet, accompanied by a side of mixed vegetables that will make your palate happy!",
+            	"ingredients": ["Tuna fillet", "Mixed vegetables"],
+            	"imgUrl": "/images/plates/grilledSalmon.png",
+            	"category": "Second"
+            }
+        headers:
+          - name: Content-Type
+            value: application/json
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: mealId
+            value: 680ffd4efc59172448b68489
+      - url: "{{ _.base_url }}/meals/:mealId"
+        name: Delete meal
+        meta:
+          id: req_1f89ad54077f4e3e857ae8abe70b3d98
+          created: 1745871577154
+          modified: 1745878474403
+          isPrivate: false
+          sortKey: -1745697317008.375
+        method: DELETE
+        headers:
+          - name: User-Agent
+            value: insomnia/11.0.2
+        settings:
+          renderRequestBody: true
+          encodeUrl: true
+          followRedirects: global
+          cookies:
+            send: true
+            store: true
+          rebuildPath: true
+        pathParameters:
+          - name: mealId
+            value: 680ffd4efc59172448b68489
+  - url: "{{ _.base_url }}"
+    name: Index
+    meta:
+      id: req_cf3985b2a1d6466ab4cd10d154317944
+      created: 1745436878812
+      modified: 1745509208665
+      isPrivate: false
+      sortKey: -1745436878812
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.base_url }}/__debug"
+    name: Debug
+    meta:
+      id: req_af75e17c5c7e4354b65109aa68677da8
+      created: 1745685655604
+      modified: 1745685660608
+      isPrivate: false
+      sortKey: -1745436878799.5
+    method: GET
+    headers:
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1745436775667
+    modified: 1745436775667
+environments:
+  name: Base Environment
+  meta:
+    id: env_99d30891da4bdcebc63947a8fc17f076de878684
+    created: 1745436775371
+    modified: 1745509318390
+    isPrivate: false
+  subEnvironments:
+    - name: My Gastronomy
+      meta:
+        id: env_572b693c044746a6a998257cbbebaae2
+        created: 1745509308976
+        modified: 1745509399342
+        isPrivate: false
+        sortKey: 1745509308976
+      data:
+        base_url: localhost:3000
