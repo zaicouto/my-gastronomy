@@ -25,7 +25,7 @@ export default function Navbar() {
       {/* Mobile */}
       <div className={styles.mobileNavbarItems}>
         <img className={styles.logo} src="/vite.svg" alt="" />
-        <div className={styles.navbarLinksContainer}>
+        <div className={styles.mobileNavbarLinksContainer}>
           <LuShoppingCart className={styles.navbarLink} />
           <LuMenu className={styles.navbarLink} onClick={toggleDrawer} />
         </div>

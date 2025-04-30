@@ -7,7 +7,7 @@
 }
 
 .logo {
-  width: 2em;
+  width: 1.5em;
 }
 
 .navbarItems {
@@ -18,11 +18,16 @@
   max-width: 1280px;
 }
 
-.navbarLinksContainer {
+.navbarLinksContainer,
+.mobileNavbarLinksContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1em;
+}
+
+.mobileNavbarLinksContainer {
+  font-size: large;
 }
 
 .navbarLink {
@@ -41,6 +46,7 @@
   align-items: center;
   padding: 2em 5em;
   gap: 1em;
+  font-size: large;
 }
 
 @media screen and (max-width: 600px) {
