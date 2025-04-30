@@ -11,6 +11,14 @@ router.get("/", async (_, res) => {
   res.ok(orders);
 });
 
+router.get("/:userId", async (req, res) => {
+  const { userId } = req.params;
+  console.log(`Reading user's orders -> /orders/${userId}`);
+
+  const orders = await ordersDao.readUserOrders(userId);
+  res.ok(orders);
+});
+
 router.post("/", async (req, res) => {
   console.log("Creating order -> /orders");
   console.log("req.body :>> ", req.body);

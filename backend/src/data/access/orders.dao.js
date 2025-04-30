@@ -60,6 +60,67 @@ export default class OrdersDAO {
     return result;
   }
 
+  async readUserOrders(userId) {
+    const result = await mongo.db
+      .collection(this.collectionName)
+      .aggregate([
+        {
+          $match: {
+            userId: new ObjectId(userId),
+          },
+        },
+        {
+          $lookup: {
+            from: "ordersItems",
+            localField: "_id",
+            foreignField: "orderId",
+            as: "items",
+          },
+        },
+        {
+          $lookup: {
+            from: "people",
+            localField: "userId",
+            foreignField: "_id",
+            as: "user",
+          },
+        },
+        {
+          $unwind: "$items",
+        },
+        {
+          $lookup: {
+            from: "meals",
+            localField: "items.mealId",
+            foreignField: "_id",
+            as: "items.details",
+          },
+        },
+        {
+          $project: {
+            userId: 0,
+            "user.password": 0,
+            "user.salt": 0,
+            "items.mealId": 0,
+          },
+        },
+        {
+          $group: {
+            _id: "$_id",
+            pickupTime: { $first: "$pickupTime" },
+            status: { $first: "$status" },
+            createdAt: { $first: "$createdAt" },
+            user: { $first: "$user" },
+            items: { $push: "$items" },
+          },
+        },
+      ])
+      .toArray();
+
+    console.log("result.slice(0, 5) :>> ", result.slice(0, 5));
+    return result;
+  }
+
   async deleteOrder(orderId) {
     const orderToDelete = await mongo.db
       .collection(this.collectionName)
@@ -85,7 +146,7 @@ export default class OrdersDAO {
       .findOneAndUpdate(
         { _id: new ObjectId(orderId) },
         { $set: orderData },
-        { returnDocument: "after" }
+        { returnDocument: "after" },
       );
 
     if (!result) {
