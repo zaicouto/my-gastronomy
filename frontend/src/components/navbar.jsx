@@ -2,6 +2,7 @@ import React from "react";
 import styles from "./navbar.module.css";
 import { LuShoppingCart, LuUser, LuMenu } from "react-icons/lu";
 import { Drawer } from "@mui/material";
+import { Link } from "react-router-dom";
 
 export default function Navbar() {
   const [openMenu, setOpenMenu] = React.useState(false);
@@ -14,44 +15,56 @@ export default function Navbar() {
     <nav className={styles.navbarContainer}>
       {/* Desktop */}
       <div className={styles.navbarItems}>
-        <img className={styles.logo} src="/vite.svg" alt="" />
+        <Link to="/">
+          <img className={styles.logo} src="/vite.svg" alt="" />
+        </Link>
         <div className={styles.navbarLinksContainer}>
-          <Links />
-          <LuShoppingCart className={styles.navbarLink} />
-          <LuUser className={styles.navbarLink} />
+          <NavLinks />
+          <Link to="/cart">
+            <LuShoppingCart className={styles.navbarLink} />
+          </Link>
+          <Link to="/auth">
+            <LuUser className={styles.navbarLink} />
+          </Link>
         </div>
       </div>
 
       {/* Mobile */}
       <div className={styles.mobileNavbarItems}>
-        <img className={styles.logo} src="/vite.svg" alt="" />
+        <Link to="/">
+          <img className={styles.logo} src="/vite.svg" alt="" />
+        </Link>
         <div className={styles.mobileNavbarLinksContainer}>
-          <LuShoppingCart className={styles.navbarLink} />
-          <LuMenu className={styles.navbarLink} onClick={toggleDrawer} />
+          <Link to="/cart">
+            <LuShoppingCart className={styles.navbarLink} />
+          </Link>
+          <Link to="/auth">
+            <LuMenu className={styles.navbarLink} onClick={toggleDrawer} />
+          </Link>
         </div>
       </div>
 
       <Drawer anchor="right" open={openMenu} onClose={toggleDrawer}>
         <div className={styles.drawer}>
-          <Links />
+          <NavLinks />
         </div>
       </Drawer>
     </nav>
   );
 }
 
-function Links() {
+function NavLinks() {
   return (
     <>
-      <a href="#" className={styles.navbarLink}>
+      <Link to="/" className={styles.navbarLink}>
         Início
-      </a>
-      <a href="#" className={styles.navbarLink}>
+      </Link>
+      <Link to="/meals" className={styles.navbarLink}>
         Pratos
-      </a>
-      <a href="#" className={styles.navbarLink}>
+      </Link>
+      <Link to="/profile" className={styles.navbarLink}>
         Perfil
-      </a>
+      </Link>
     </>
   );
 }
