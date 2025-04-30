@@ -3,5 +3,6 @@
     "javascript.preferences.importModuleSpecifierEnding": "js",
     "cSpell.words": [
         "pbkd"
-    ]
+    ],
+    "editor.formatOnSave": true
 }
