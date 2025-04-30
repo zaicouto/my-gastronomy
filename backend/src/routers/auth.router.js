@@ -4,6 +4,7 @@ import jwt from "jsonwebtoken";
 import mongo from "../data/mongo.js";
 import { ObjectId } from "mongodb";
 import authMiddleware from "../middlewares/auth.middleware.js";
+import pbkdf2 from "../helpers/pbkdf2.js";
 
 const router = express.Router();
 
@@ -26,7 +27,7 @@ router.post("/signup", async (req, res) => {
   const result = await mongo.db.collection(collectionName).insertOne({
     email: req.body.email,
     password: hashedPassword,
-    newSalt,
+    salt: newSalt,
   });
 
   if (!result.insertedId) {
