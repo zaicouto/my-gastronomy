@@ -11,7 +11,7 @@ const router = express.Router();
 const collectionName = "people";
 
 router.post("/signup", async (req, res) => {
-  console.log("Trying to signup -> /auth/signup");
+  console.log("Trying to sign up -> /auth/signup");
   console.log("req.body :>> ", req.body);
 
   const userExists = await mongo.db
@@ -43,7 +43,7 @@ router.post("/signup", async (req, res) => {
       id: rest._id,
       email: rest.email,
     },
-    process.env.JWT_SECRET,
+    process.env.JWT_SECRET
   );
 
   return res.ok({ token, user: rest, loggedIn: true });

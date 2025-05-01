@@ -21,18 +21,18 @@ passport.use(
         const hashedPassword = await pbkdf2(userPassword, user.salt.buffer);
         const userPasswordBuffer = Buffer.from(user.password.buffer);
         if (!crypto.timingSafeEqual(userPasswordBuffer, hashedPassword)) {
-          console.error("Invalid password :>> ", userPassword);
+          console.error("Invalid password: ", userPassword);
           return callback(null, false);
         }
 
         const { password, salt, ...rest } = user;
         return callback(null, rest);
       } catch (error) {
-        console.error("Failed to hash password :>> ", error);
+        console.error("Failed to hash password: ", error);
         return callback(null, false);
       }
-    },
-  ),
+    }
+  )
 );
 
 export default function authMiddleware(req, res, next) {
@@ -47,7 +47,7 @@ export default function authMiddleware(req, res, next) {
     },
     (err, user) => {
       if (err) {
-        console.error("Authentication error :>> ", err);
+        console.error("Authentication error: ", err);
         return next(new Error("Failed to authenticate user"));
       }
 
@@ -63,6 +63,6 @@ export default function authMiddleware(req, res, next) {
       req.auth = { token, user: rest, loggedIn: true };
 
       next();
-    },
+    }
   )(req, res, next);
 }

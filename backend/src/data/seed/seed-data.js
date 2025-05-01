@@ -28,12 +28,12 @@ async function seedData() {
 
     console.log("result :>> ", result);
   } catch (error) {
-    console.error("Error seeding data: ", error);
+    console.error("Failed tp seed data: ", error);
   } finally {
     await mongo.client.close();
   }
 }
 
 seedData().catch((error) => {
-  console.error(error);
+  console.error("Error seeding data: ", error);
 });

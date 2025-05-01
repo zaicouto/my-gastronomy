@@ -59,6 +59,6 @@ async function main() {
 }
 
 main().catch((err) => {
-  console.error("Error starting app :>> ", err);
+  console.error("Error starting app: ", err);
   process.exit(1);
 });
