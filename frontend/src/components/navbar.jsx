@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "./navbar.module.css";
+import s from "./navbar.module.css";
 import { LuShoppingCart, LuUser, LuMenu } from "react-icons/lu";
 import { Drawer } from "@mui/material";
 import { Link } from "react-router-dom";
@@ -12,40 +12,40 @@ export default function Navbar() {
   };
 
   return (
-    <nav className={styles.navbarContainer}>
+    <nav className={s.container}>
       {/* Desktop */}
-      <div className={styles.navbarItems}>
+      <div className={s.items}>
         <Link to="/">
-          <img className={styles.logo} src="/vite.svg" alt="" />
+          <img className={s.logo} src="/vite.svg" alt="" />
         </Link>
-        <div className={styles.navbarLinksContainer}>
+        <div className={s.linksContainer}>
           <NavLinks />
           <Link to="/cart">
-            <LuShoppingCart className={styles.navbarLink} />
+            <LuShoppingCart className={s.navbarLink} />
           </Link>
           <Link to="/auth">
-            <LuUser className={styles.navbarLink} />
+            <LuUser className={s.navbarLink} />
           </Link>
         </div>
       </div>
 
       {/* Mobile */}
-      <div className={styles.mobileNavbarItems}>
+      <div className={s.mobileItems}>
         <Link to="/">
-          <img className={styles.logo} src="/vite.svg" alt="" />
+          <img className={s.logo} src="/vite.svg" alt="" />
         </Link>
-        <div className={styles.mobileNavbarLinksContainer}>
+        <div className={s.mobileLinksContainer}>
           <Link to="/cart">
-            <LuShoppingCart className={styles.navbarLink} />
+            <LuShoppingCart className={s.navbarLink} />
           </Link>
           <Link to="/auth">
-            <LuMenu className={styles.navbarLink} onClick={toggleDrawer} />
+            <LuMenu className={s.navbarLink} onClick={toggleDrawer} />
           </Link>
         </div>
       </div>
 
       <Drawer anchor="right" open={openMenu} onClose={toggleDrawer}>
-        <div className={styles.drawer}>
+        <div className={s.drawer}>
           <NavLinks />
         </div>
       </Drawer>
@@ -56,13 +56,13 @@ export default function Navbar() {
 function NavLinks() {
   return (
     <>
-      <Link to="/" className={styles.navbarLink}>
+      <Link to="/" className={s.navbarLink}>
         Início
       </Link>
-      <Link to="/meals" className={styles.navbarLink}>
+      <Link to="/meals" className={s.navbarLink}>
         Pratos
       </Link>
-      <Link to="/profile" className={styles.navbarLink}>
+      <Link to="/profile" className={s.navbarLink}>
         Perfil
       </Link>
     </>

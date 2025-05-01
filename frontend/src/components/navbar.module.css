@@ -1,4 +1,4 @@
-.navbarContainer {
+.container {
   background-color: #004643;
   height: 96px;
   display: flex;
@@ -10,7 +10,7 @@
   width: 1.5em;
 }
 
-.navbarItems {
+.items {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -18,15 +18,15 @@
   max-width: 1280px;
 }
 
-.navbarLinksContainer,
-.mobileNavbarLinksContainer {
+.linksContainer,
+.mobileLinksContainer {
   display: flex;
   justify-content: center;
   align-items: center;
   gap: 1em;
 }
 
-.mobileNavbarLinksContainer {
+.mobileLinksContainer {
   font-size: large;
 }
 
@@ -34,7 +34,7 @@
   color: #faf0ca;
 }
 
-.mobileNavbarItems {
+.mobileItems {
   display: none;
 }
 
@@ -50,11 +50,11 @@
 }
 
 @media screen and (max-width: 600px) {
-  .navbarItems {
+  .items {
     display: none;
   }
 
-  .mobileNavbarItems {
+  .mobileItems {
     display: flex;
     align-items: center;
     justify-content: space-between;
