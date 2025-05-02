@@ -12,7 +12,7 @@ const collectionName = "people";
 
 router.post("/signup", async (req, res) => {
   console.log("Trying to sign up -> /auth/signup");
-  console.log("req.body :>> ", req.body);
+  console.log("req.body.email :>> ", req.body.email);
 
   const userExists = await mongo.db
     .collection(collectionName)

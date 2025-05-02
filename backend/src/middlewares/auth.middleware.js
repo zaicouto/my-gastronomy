@@ -37,7 +37,7 @@ passport.use(
 
 export default function authMiddleware(req, res, next) {
   console.log("Trying to authenticate");
-  console.log("req.body :>> ", req.body);
+  console.log("req.body.email :>> ", req.body.email);
 
   passport.authenticate(
     "local",

@@ -39,6 +39,7 @@ async function main() {
   app.use(httpResponseMiddleware);
 
   // Health check
+  app.get("/", (_, res) => res.ok("Hello World!"));
   app.get("/__debug", (_, res) => res.ok("Hello World!"));
 
   // Routers
