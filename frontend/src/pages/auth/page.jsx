@@ -2,11 +2,12 @@ import React from "react";
 import s from "./page.module.css";
 import { Button, TextField } from "@mui/material";
 import useAuth from "../../hooks/use-auth";
+import Loading from "../../components/loading.jsx";
 
 export default function Auth() {
   const [formType, setFormType] = React.useState("login");
   const [formData, setFormData] = React.useState(null);
-  const { login, signUp } = useAuth();
+  const { login, signUp, loading } = useAuth();
 
   console.log("formType :>> ", formType);
   console.log("formData.email :>> ", formData?.email);
@@ -27,27 +28,28 @@ export default function Auth() {
     switch (formType) {
       case "login":
         console.log("Logging in with data: ", formData?.email);
-
         response = await login(formData);
-        console.log("response.body.token :>> ", response.body.token);
-
         break;
       case "signUp":
         console.log("Signing up with data: ", formData?.email);
-
         if (formData.password !== formData.passwordConfirmation) {
           console.log("Passwords do not match!");
           return;
         }
 
         response = await signUp(formData);
-        console.log("response.body.token :>> ", response.body.token);
-
         break;
       default:
         console.log("Unknown form type: ", formType);
         break;
     }
+
+    if (response?.error) {
+      console.log("Failed to authenticate");
+      return;
+    }
+
+    console.log("response?.body?.token :>> ", response?.body?.token);
   };
 
   const handleDataChange = (e) => {
@@ -57,6 +59,10 @@ export default function Auth() {
       [e.target.name]: e.target.value,
     });
   };
+
+  if (loading) {
+    return <Loading />;
+  }
 
   if (formType === "login") {
     return (

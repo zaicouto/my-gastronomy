@@ -20,6 +20,15 @@ export default function useAuth() {
       const data = await response.json();
       console.log("Login response: ", data);
 
+      if (data.error) {
+        throw new Error(data.error);
+      }
+
+      if (data.body.token) {
+        console.log("Token saved in localStorage");
+        localStorage.setItem("auth-token", data.body.token);
+      }
+
       return data;
     } catch (error) {
       console.error("Error logging in: ", error);
