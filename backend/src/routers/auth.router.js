@@ -25,6 +25,7 @@ router.post("/signup", async (req, res) => {
   const newSalt = crypto.randomBytes(16);
   const hashedPassword = await pbkdf2(req.body.password, newSalt);
   const result = await mongo.db.collection(collectionName).insertOne({
+    fullName: req.body.fullName,
     email: req.body.email,
     password: hashedPassword,
     salt: newSalt,
