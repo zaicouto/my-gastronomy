@@ -62,9 +62,6 @@ function NavLinks() {
       <Link to="/meals" className={s.navbarLink}>
         Pratos
       </Link>
-      <Link to="/profile" className={s.navbarLink}>
-        Perfil
-      </Link>
     </>
   );
 }
