@@ -1,16 +1,34 @@
 import React from "react";
 import s from "./page.module.css";
 import { Button, TextField } from "@mui/material";
-import useAuth from "../../hooks/use-auth";
+import { useAuth } from "../../hooks/use-auth";
 import Loading from "../../components/loading.jsx";
+import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
   const [formType, setFormType] = React.useState("login");
   const [formData, setFormData] = React.useState(null);
   const { login, signUp, loading } = useAuth();
+  const navigate = useNavigate();
 
   console.log("formType :>> ", formType);
-  console.log("formData.email :>> ", formData?.email);
+
+  // With structuredClone, we can safely remove sensitive data from the formData object
+  // without affecting the original object. This is useful for logging or sending data
+  const filteredFormData = structuredClone(formData || {});
+  delete filteredFormData?.password;
+  delete filteredFormData?.passwordConfirmation;
+  console.log("Form data: ", filteredFormData);
+
+  const authToken = localStorage.getItem("auth-token");
+  console.log("authToken :>> ", authToken);
+
+  React.useEffect(() => {
+    if (authToken) {
+      console.log("Auth token found, redirecting to profile page...");
+      navigate("/profile");
+    }
+  }, [authToken, navigate]);
 
   const handleFormTypeChange = () => {
     if (formType === "login") {
@@ -27,11 +45,11 @@ export default function Auth() {
     let response = null;
     switch (formType) {
       case "login":
-        console.log("Logging in with data: ", formData?.email);
+        console.log("Logging in with data: ", filteredFormData);
         response = await login(formData);
         break;
       case "signUp":
-        console.log("Signing up with data: ", formData?.email);
+        console.log("Signing up with data: ", filteredFormData);
         if (formData.password !== formData.passwordConfirmation) {
           console.log("Passwords do not match!");
           return;

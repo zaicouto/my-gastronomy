@@ -1,7 +1,7 @@
 import React from "react";
 import { baseUrl } from "../utils/constants.js";
 
-export default function useAuth() {
+export function useAuth() {
   const [loading, setLoading] = React.useState(false);
 
   const login = async (formData) => {
@@ -27,18 +27,23 @@ export default function useAuth() {
       if (data.body.token) {
         console.log("Token saved in localStorage");
         localStorage.setItem("auth-token", data.body.token);
+        localStorage.setItem("user", JSON.stringify(data.body.user));
       }
 
       return data;
     } catch (error) {
       console.error("Error logging in: ", error);
-      return;
+      return { error: error.message };
     } finally {
       setLoading(false);
     }
   };
 
-  const logout = async () => {};
+  const logout = () => {
+    console.log("Logging out...");
+    localStorage.removeItem("auth-token");
+    localStorage.removeItem("user");
+  };
 
   const signUp = async (formData) => {
     setLoading(true);
@@ -59,7 +64,7 @@ export default function useAuth() {
       return data;
     } catch (error) {
       console.error("Error signin up: ", error);
-      return;
+      return { error: error.message };
     } finally {
       setLoading(false);
     }
