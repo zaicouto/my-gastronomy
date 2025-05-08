@@ -4,14 +4,16 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "concurrently \"pnpm --filter frontend dev\" \"pnpm --filter backend dev\"",
-    "postinstall": "pnpm install --filter frontend && pnpm install --filter backend"
+    "dev": "concurrently \"pnpm --filter backend dev\" \"pnpm --filter frontend dev\"",
+    "postinstall": "pnpm install --filter backend && pnpm install --filter frontend",
+    "format": "prettier --write --cache \"{frontend,backend}/**/*.{js,json,css,html,jsx}\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "packageManager": "pnpm@10.9.0",
   "devDependencies": {
-    "concurrently": "^9.1.2"
+    "concurrently": "^9.1.2",
+    "prettier": "^3.5.3"
   }
 }
