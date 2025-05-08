@@ -2,23 +2,23 @@ import React from "react";
 import s from "./page.module.css";
 import { Button, TextField } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
-import Loading from "../../components/loading.jsx";
+import Loader from "../../components/loader.jsx";
 import { useNavigate } from "react-router-dom";
 
 export default function Auth() {
   const [formType, setFormType] = React.useState("login");
-  const [formData, setFormData] = React.useState(null);
-  const { login, signUp, loading } = useAuth();
+  const [formData, setFormData] = React.useState({});
+  const { login, signup, loading } = useAuth();
   const navigate = useNavigate();
 
   console.log("formType :>> ", formType);
 
   // With structuredClone, we can safely remove sensitive data from the formData object
   // without affecting the original object. This is useful for logging or sending data
-  const filteredFormData = structuredClone(formData || {});
-  delete filteredFormData?.password;
-  delete filteredFormData?.passwordConfirmation;
-  console.log("Form data: ", filteredFormData);
+  const formDataClone = structuredClone(formData);
+  delete formDataClone?.password;
+  delete formDataClone?.passwordConfirmation;
+  console.log("Form data: ", formDataClone);
 
   const authToken = localStorage.getItem("auth-token");
   console.log("authToken :>> ", authToken);
@@ -32,7 +32,7 @@ export default function Auth() {
 
   const handleFormTypeChange = () => {
     if (formType === "login") {
-      setFormType("signUp");
+      setFormType("signup");
     } else {
       setFormType("login");
     }
@@ -45,17 +45,17 @@ export default function Auth() {
     let response = null;
     switch (formType) {
       case "login":
-        console.log("Logging in with data: ", filteredFormData);
+        console.log("Logging in with data: ", formDataClone);
         response = await login(formData);
         break;
-      case "signUp":
-        console.log("Signing up with data: ", filteredFormData);
+      case "signup":
+        console.log("Signing up with data: ", formDataClone);
         if (formData.password !== formData.passwordConfirmation) {
           console.log("Passwords do not match!");
           return;
         }
 
-        response = await signUp(formData);
+        response = await signup(formData);
         break;
       default:
         console.log("Unknown form type: ", formType);
@@ -67,7 +67,7 @@ export default function Auth() {
       return;
     }
 
-    console.log("response?.body?.token :>> ", response?.body?.token);
+    console.log("response :>> ", response);
   };
 
   const handleDataChange = (e) => {
@@ -79,7 +79,7 @@ export default function Auth() {
   };
 
   if (loading) {
-    return <Loading />;
+    return <Loader />;
   }
 
   if (formType === "login") {
