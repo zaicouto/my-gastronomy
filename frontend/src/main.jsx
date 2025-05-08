@@ -45,5 +45,5 @@ const pages = createBrowserRouter([
 createRoot(document.getElementById("root")).render(
   <StrictMode>
     <RouterProvider router={pages} />
-  </StrictMode>
+  </StrictMode>,
 );
