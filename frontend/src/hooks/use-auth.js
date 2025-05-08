@@ -1,8 +1,8 @@
-import React from "react";
+import { useState } from "react";
 import { baseUrl } from "../utils/constants.js";
 
 export function useAuth() {
-  const [loading, setLoading] = React.useState(false);
+  const [loading, setLoading] = useState(false);
 
   const login = async (formData) => {
     setLoading(true);
@@ -30,7 +30,7 @@ export function useAuth() {
         localStorage.setItem("user", JSON.stringify(data.body.user));
       }
 
-      return data;
+      return data.body;
     } catch (error) {
       console.error("Error logging in: ", error);
       return { error: error.message };
@@ -45,7 +45,7 @@ export function useAuth() {
     localStorage.removeItem("user");
   };
 
-  const signUp = async (formData) => {
+  const signup = async (formData) => {
     setLoading(true);
 
     try {
@@ -61,7 +61,7 @@ export function useAuth() {
       const data = await response.json();
       console.log("Sign up response: ", data);
 
-      return data;
+      return data.body;
     } catch (error) {
       console.error("Error signin up: ", error);
       return { error: error.message };
@@ -71,9 +71,9 @@ export function useAuth() {
   };
 
   return {
+    loading,
     login,
     logout,
-    signUp,
-    loading,
+    signup,
   };
 }
