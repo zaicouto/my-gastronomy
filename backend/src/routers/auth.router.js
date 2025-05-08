@@ -44,7 +44,7 @@ router.post("/signup", async (req, res) => {
       id: rest._id,
       email: rest.email,
     },
-    process.env.JWT_SECRET
+    process.env.JWT_SECRET,
   );
 
   return res.ok({ token, user: rest, loggedIn: true });

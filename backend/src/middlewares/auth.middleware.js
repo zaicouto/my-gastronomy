@@ -31,8 +31,8 @@ passport.use(
         console.error("Failed to hash password: ", error);
         return callback(null, false);
       }
-    }
-  )
+    },
+  ),
 );
 
 export default function authMiddleware(req, res, next) {
@@ -63,6 +63,6 @@ export default function authMiddleware(req, res, next) {
       req.auth = { token, user: rest, loggedIn: true };
 
       next();
-    }
+    },
   )(req, res, next);
 }

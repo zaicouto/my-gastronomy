@@ -11,9 +11,9 @@ router.get("/", async (_, res) => {
   res.ok(orders);
 });
 
-router.get("/:userId", async (req, res) => {
+router.get("/user/:userId", async (req, res) => {
   const { userId } = req.params;
-  console.log(`Reading user's orders -> /orders/${userId}`);
+  console.log(`Reading user's orders -> /orders/user/${userId}`);
 
   const orders = await ordersDao.readUserOrders(userId);
   res.ok(orders);
