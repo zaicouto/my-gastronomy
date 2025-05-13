@@ -28,7 +28,8 @@ export default function Auth() {
       console.log("Auth token found, redirecting to profile page...");
       navigate("/profile");
     }
-  }, [authToken, navigate]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [authToken]);
 
   const handleFormTypeChange = () => {
     if (formType === "login") {
