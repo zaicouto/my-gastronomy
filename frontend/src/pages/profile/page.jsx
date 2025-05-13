@@ -3,13 +3,13 @@ import s from "./page.module.css";
 import { useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import { useAuth } from "../../hooks/use-auth";
-import { useCart } from "../../hooks/use-cart.js";
+import { useOrders } from "../../hooks/use-orders.js";
 import Loader from "../../components/loader.jsx";
 
 export default function Profile() {
   const navigate = useNavigate();
   const { logout } = useAuth();
-  const { getUserOrders, loading } = useCart();
+  const { getUserOrders, loading } = useOrders();
   const [userData, setUserData] = React.useState({});
 
   React.useEffect(() => {
@@ -32,18 +32,20 @@ export default function Profile() {
         setUserData({ user, orders });
       });
     }
-  }, [navigate, getUserOrders]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   if (loading) {
     return <Loader />;
   }
 
-  const user = userData?.user;
   return (
     <div>
       <h1>Perfil</h1>
-      <div className={s.profileContainer}>
-        <h2>Boas-vindas, {user?.fullName || user?.email}</h2>
+      <div className={s.container}>
+        <h2>
+          Boas-vindas, {userData?.user?.fullName || userData?.user?.email}
+        </h2>
         <Button
           onClick={() => {
             logout();
@@ -52,6 +54,31 @@ export default function Profile() {
         >
           Logout
         </Button>
+        <div>
+          <h3>Pedidos</h3>
+          {userData?.orders?.length > 0 ? (
+            <ul className={s.ordersList}>
+              {userData.orders.map((order) => (
+                <li key={order._id} className={s.orderItem}>
+                  <p>ID do Pedido: {order._id}</p>
+                  <p>Data: {new Date(order.pickupTime).toLocaleDateString()}</p>
+                  <p>Status: {order.status}</p>
+                  <ul className={s.itemsList}>
+                    {order.items.map((item) => (
+                      <li key={item._id}>
+                        <h4>Produto: {item.details[0].name}</h4>
+                        <p>Quantidade: {item.quantity}</p>
+                        <p>Preço: R$ {item.details[0].price.toFixed(2)}</p>
+                      </li>
+                    ))}
+                  </ul>
+                </li>
+              ))}
+            </ul>
+          ) : (
+            <p>Nenhum pedido encontrado.</p>
+          )}
+        </div>
       </div>
     </div>
   );

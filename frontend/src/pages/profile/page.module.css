@@ -1,0 +1,22 @@
+.ordersList {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1em;
+}
+
+.orderItem {
+  background-color: #004643;
+  color: #faf0ca;
+  padding: 1em;
+}
+
+.ordersList li {
+  list-style: none;
+}
+
+.itemsList {
+  padding: 0.5em 0;
+  display: flex;
+  gap: 0.5em;
+  flex-direction: column;
+}
