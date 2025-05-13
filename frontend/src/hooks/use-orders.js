@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { baseUrl } from "../utils/constants.js";
 
-export function useCart() {
+export function useOrders() {
   const [loading, setLoading] = useState(false);
 
   const getUserOrders = async (userId) => {
